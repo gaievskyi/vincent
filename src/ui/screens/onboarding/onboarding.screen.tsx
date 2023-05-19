@@ -20,7 +20,7 @@ export const OnboardingScreen = ({ navigation }: OnboardingProps) => {
         {
           title: "Hey!",
           subtitle: "Vincent is your everyday pet routine helper",
-          backgroundColor: "#003c8f",
+          backgroundColor: "black",
           image: (
             <MaterialCommunityIcons
               name="human-greeting"
@@ -32,7 +32,7 @@ export const OnboardingScreen = ({ navigation }: OnboardingProps) => {
         {
           title: "Dog's Profile",
           subtitle: "Get deep analysis about your pet",
-          backgroundColor: "#5e92f3",
+          backgroundColor: "black",
           image: (
             <MaterialCommunityIcons
               name="dog"
@@ -44,7 +44,7 @@ export const OnboardingScreen = ({ navigation }: OnboardingProps) => {
         {
           title: "Get Hints",
           subtitle: "Reminders about walks, vaccinations, and other",
-          backgroundColor: "#1565c0",
+          backgroundColor: "black",
           image: (
             <Ionicons
               name="ios-notifications-circle"
@@ -68,7 +68,7 @@ export const OnboardingScreen = ({ navigation }: OnboardingProps) => {
               <Text style={{ fontSize: 16 }}>Start</Text>
             </Pressable>
           ),
-          backgroundColor: "#003c8f",
+          backgroundColor: "black",
           image: (
             <Ionicons
               name="ios-checkmark-circle"

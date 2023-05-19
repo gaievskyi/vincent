@@ -18,7 +18,7 @@ class Storage implements IStorage {
     try {
       return await AsyncStorage.getItem(key)
     } catch (error) {
-      ErrorHandler.on(error)
+      ErrorHandler.handle(error)
     } finally {
       return null
     }
@@ -33,7 +33,7 @@ class Storage implements IStorage {
     try {
       await AsyncStorage.setItem(key, value)
     } catch (error) {
-      ErrorHandler.on(error)
+      ErrorHandler.handle(error)
     }
   }
 
@@ -45,7 +45,7 @@ class Storage implements IStorage {
     try {
       await AsyncStorage.removeItem(key)
     } catch (error) {
-      ErrorHandler.on(error)
+      ErrorHandler.handle(error)
     }
   }
 
@@ -56,9 +56,34 @@ class Storage implements IStorage {
     try {
       await AsyncStorage.clear()
     } catch (error) {
-      ErrorHandler.on(error)
+      ErrorHandler.handle(error)
     }
   }
 }
 
 export const storage = new Storage()
+
+export async function log(): Promise<void> {
+  try {
+    const keys = await AsyncStorage.getAllKeys()
+    if (!keys) {
+      console.error("No keys found")
+      return
+    }
+    const stores = await AsyncStorage.multiGet(keys)
+    if (!stores) {
+      console.error("No stores found")
+      return
+    }
+    stores.forEach(([key, value]) => {
+      if (key !== null && value !== null) {
+        console.log({ [key]: value })
+      }
+    })
+  } catch (error) {
+    ErrorHandler.handle(error)
+  }
+}
+
+//? Uncomment to print AsyncStorage entries.
+// log()
