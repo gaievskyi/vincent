@@ -19,6 +19,7 @@ class Storage implements IStorage {
       return await AsyncStorage.getItem(key)
     } catch (error) {
       ErrorHandler.on(error)
+    } finally {
       return null
     }
   }
