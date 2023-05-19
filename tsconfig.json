@@ -1,0 +1,26 @@
+{
+    "extends": "expo/tsconfig.base",
+    "compilerOptions": {
+        "strict": true,
+        "baseUrl": "./",
+        "paths": {
+            "~/*": ["./src/*"]
+        },
+        "skipLibCheck": true,
+        "jsx": "react-native",
+        "isolatedModules": true,
+        "allowJs": true,
+        "checkJs": true,
+        "resolveJsonModule": true,
+        "noEmit": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "removeComments": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "useDefineForClassFields": true
+    },
+    "exclude": ["./*.config.js"]
+}
