@@ -28,12 +28,6 @@ export const HomeScreen = ({ navigation }: HomeProps) => (
       />
     </View>
     <View style={styles.container}>
-      <View style={styles.box}>
-        <Text style={styles.heading}>
-          What are you looking for today,{" "}
-          <Text style={styles.name}>Daniel?</Text>
-        </Text>
-      </View>
       <View style={styles.buttonBox}>
         <Pressable style={styles.button}>
           <Ionicons
@@ -102,16 +96,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     color: "white",
-  },
-  box: {
-    paddingVertical: 35,
-    paddingHorizontal: 50,
-  },
-  heading: {
-    textAlign: "center",
-    fontSize: 40,
-    justifyContent: "center",
-    alignItems: "center",
   },
   name: {
     color: "#ef8243",

@@ -9,7 +9,6 @@ import { Octicons } from "@expo/vector-icons"
 import { Ionicons } from "@expo/vector-icons"
 import { Feather } from "@expo/vector-icons"
 import { MaterialIcons } from "@expo/vector-icons"
-import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { FontAwesome5 } from "@expo/vector-icons"
 
 import { type ProfileProps } from "~/modules"
@@ -21,47 +20,59 @@ const image = {
 export const ProfileScreen = ({ navigation }: ProfileProps) => {
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={image}
-        resizeMode="cover"
-        style={styles.avatar}
-      >
-        <View style={styles.actions}>
-          <Pressable style={styles.button}>
-            <Feather
-              name="image"
-              size={20}
-              color="black"
-            />
-          </Pressable>
-          <Pressable style={styles.button}>
-            <Feather
-              name="edit"
-              size={20}
-              color="black"
-            />
-          </Pressable>
-        </View>
-        <View style={styles.imageScroll}>
-          <View
-            style={{
-              ...styles.imageScrollItem,
-              backgroundColor: "black",
-            }}
-          />
-          <View style={styles.imageScrollItem} />
-          <View style={styles.imageScrollItem} />
-        </View>
-      </ImageBackground>
+      <View style={styles.avatarBox}>
+        <ImageBackground
+          source={image}
+          resizeMode="cover"
+          style={styles.avatar}
+        >
+          <View style={styles.actions}>
+            <Pressable style={styles.button}>
+              <Feather
+                name="image"
+                size={20}
+                color="black"
+              />
+            </Pressable>
+            <Pressable style={styles.button}>
+              <Feather
+                name="edit"
+                size={20}
+                color="black"
+              />
+            </Pressable>
+          </View>
+          <View style={styles.actionsBottom}>
+            <View style={styles.buttons}>
+              <Pressable style={styles.button}>
+                <Feather
+                  name="users"
+                  size={20}
+                  color="black"
+                />
+              </Pressable>
+              <Pressable style={styles.button}>
+                <Feather
+                  name="zap"
+                  size={20}
+                  color="black"
+                />
+              </Pressable>
+            </View>
+          </View>
+        </ImageBackground>
+      </View>
       <View style={styles.profile}>
         <View style={styles.expandable} />
         <View style={styles.profileHead}>
           <View>
-            <Ionicons
-              name="ios-male"
-              size={24}
-              color="black"
-            />
+            <View style={styles.stats}>
+              <Ionicons
+                name="ios-male"
+                size={24}
+                color="black"
+              />
+            </View>
             <Text style={styles.name}>Vincent</Text>
             <Text style={styles.breed}>Yorkshire Terrier</Text>
           </View>
@@ -71,7 +82,7 @@ export const ProfileScreen = ({ navigation }: ProfileProps) => {
               size={14}
               color="black"
             />
-            <Text style={styles.location}>from Poland, Katowice</Text>
+            <Text style={styles.location}>from Ukraine, Kharkiv</Text>
           </View>
         </View>
         <View style={styles.characteristics}>
@@ -111,13 +122,19 @@ export const ProfileScreen = ({ navigation }: ProfileProps) => {
         </View>
         <View style={styles.indicators}>
           <View style={styles.indicatorBox}>
-            <Text>Happiness</Text>
+            <View style={styles.indicatorHead}>
+              <Text>Happiness</Text>
+              <Text style={styles.indicatorValue}>75%</Text>
+            </View>
             <View style={styles.indicatorOuter}>
               <View style={styles.indicator} />
             </View>
           </View>
           <View style={styles.indicatorBox}>
-            <Text>Relationships</Text>
+            <View style={styles.indicatorHead}>
+              <Text>Relationships</Text>
+              <Text style={styles.indicatorValue}>50%</Text>
+            </View>
             <View style={styles.indicatorOuter}>
               <View style={{ ...styles.indicator, width: "50%" }} />
             </View>
@@ -144,6 +161,10 @@ const styles = StyleSheet.create({
     maxHeight: "60%",
     position: "relative",
   },
+  avatarBox: {
+    width: "100%",
+    height: "100%",
+  },
   actions: {
     width: "100%",
     flexDirection: "row",
@@ -153,21 +174,20 @@ const styles = StyleSheet.create({
     top: 50,
     paddingHorizontal: 15,
   },
-  imageScroll: {
-    flexDirection: "row",
-    gap: 5,
+  actionsBottom: {
+    width: "100%",
     position: "absolute",
-    alignSelf: "center",
-    bottom: 60,
-    backgroundColor: "white",
-    borderRadius: 50,
-    padding: 10,
+    bottom: 115,
+    paddingHorizontal: 15,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
   },
-  imageScrollItem: {
-    width: 5,
-    height: 5,
-    backgroundColor: "rgba(0, 0 , 0, 0.2)",
-    borderRadius: 10,
+  buttons: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   button: {
     justifyContent: "center",
@@ -196,6 +216,12 @@ const styles = StyleSheet.create({
     shadowRadius: 40,
     elevation: 15,
   },
+  stats: {
+    flexDirection: "row",
+    gap: 5,
+    alignItems: "center",
+  },
+  friends: {},
   expandable: {
     alignSelf: "center",
     width: "20%",
@@ -216,8 +242,9 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   location: {
-    fontSize: 14,
-    color: "hsl(0, 0%, 46.666666666666664%)",
+    fontSize: 12,
+    fontWeight: "500",
+    color: "#black",
   },
   input: {
     fontSize: 30,
@@ -255,13 +282,23 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   indicatorBox: {
-    gap: 8,
+    gap: 12,
+  },
+  indicatorHead: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 5,
   },
   indicator: {
     height: 10,
     width: "75%",
     backgroundColor: "black",
     borderRadius: 25,
+  },
+  indicatorValue: {
+    alignSelf: "flex-end",
+    fontWeight: "800",
   },
   indicatorOuter: {
     height: 3,
