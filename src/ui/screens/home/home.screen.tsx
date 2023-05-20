@@ -70,6 +70,7 @@ export const HomeScreen = ({ navigation }: HomeProps) => (
           <Text style={styles.buttonLabel}>Training</Text>
         </Pressable>
       </View>
+      <View></View>
     </View>
   </SafeAreaView>
 )

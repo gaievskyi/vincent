@@ -12,58 +12,58 @@ import { MaterialIcons } from "@expo/vector-icons"
 import { FontAwesome5 } from "@expo/vector-icons"
 
 import { type ProfileProps } from "~/modules"
+import { Sheet } from "~/ui/molecules"
 
 const image = {
   uri: "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=988&q=100",
 }
 
-export const ProfileScreen = ({ navigation }: ProfileProps) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.avatarBox}>
-        <ImageBackground
-          source={image}
-          resizeMode="cover"
-          style={styles.avatar}
-        >
-          <View style={styles.actions}>
+export const ProfileScreen = ({ navigation }: ProfileProps) => (
+  <View style={styles.container}>
+    <View style={styles.avatarBox}>
+      <ImageBackground
+        source={image}
+        resizeMode="cover"
+        style={styles.avatar}
+      >
+        <View style={styles.actions}>
+          <Pressable style={styles.button}>
+            <Feather
+              name="image"
+              size={20}
+              color="black"
+            />
+          </Pressable>
+          <Pressable style={styles.button}>
+            <Feather
+              name="edit"
+              size={20}
+              color="black"
+            />
+          </Pressable>
+        </View>
+        <View style={styles.actionsBottom}>
+          <View style={styles.buttons}>
             <Pressable style={styles.button}>
               <Feather
-                name="image"
+                name="users"
                 size={20}
                 color="black"
               />
             </Pressable>
             <Pressable style={styles.button}>
               <Feather
-                name="edit"
+                name="zap"
                 size={20}
                 color="black"
               />
             </Pressable>
           </View>
-          <View style={styles.actionsBottom}>
-            <View style={styles.buttons}>
-              <Pressable style={styles.button}>
-                <Feather
-                  name="users"
-                  size={20}
-                  color="black"
-                />
-              </Pressable>
-              <Pressable style={styles.button}>
-                <Feather
-                  name="zap"
-                  size={20}
-                  color="black"
-                />
-              </Pressable>
-            </View>
-          </View>
-        </ImageBackground>
-      </View>
+        </View>
+      </ImageBackground>
+    </View>
+    <Sheet>
       <View style={styles.profile}>
-        <View style={styles.expandable} />
         <View style={styles.profileHead}>
           <View>
             <View style={styles.stats}>
@@ -142,9 +142,9 @@ export const ProfileScreen = ({ navigation }: ProfileProps) => {
         </View>
         <View style={styles.achievements}></View>
       </View>
-    </View>
-  )
-}
+    </Sheet>
+  </View>
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     width: "100%",
-    maxHeight: "60%",
     position: "relative",
   },
   avatarBox: {
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
   actionsBottom: {
     width: "100%",
     position: "absolute",
-    bottom: 115,
+    bottom: "37%",
     paddingHorizontal: 15,
     justifyContent: "space-between",
     flexDirection: "row",
@@ -198,23 +197,9 @@ const styles = StyleSheet.create({
     width: 45,
   },
   profile: {
-    position: "absolute",
-    bottom: 0,
-    borderTopStartRadius: 25,
-    borderTopEndRadius: 25,
-    backgroundColor: "white",
-    paddingHorizontal: 20,
-    paddingVertical: 50,
-    minHeight: "35%",
+    flex: 1,
     width: "100%",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.8,
-    shadowRadius: 40,
-    elevation: 15,
+    height: "100%",
   },
   stats: {
     flexDirection: "row",
@@ -222,15 +207,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   friends: {},
-  expandable: {
-    alignSelf: "center",
-    width: "20%",
-    backgroundColor: "#ccc",
-    height: 5,
-    borderRadius: 10,
-    position: "absolute",
-    top: 13,
-  },
   profileHead: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -244,7 +220,7 @@ const styles = StyleSheet.create({
   location: {
     fontSize: 12,
     fontWeight: "500",
-    color: "#black",
+    color: "black",
   },
   input: {
     fontSize: 30,
@@ -260,6 +236,7 @@ const styles = StyleSheet.create({
   },
   characteristics: {
     marginVertical: 20,
+    marginBottom: 35,
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
@@ -306,5 +283,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
     borderRadius: 20,
   },
-  achievements: {},
+  achievements: {
+    marginVertical: 20,
+  },
 })

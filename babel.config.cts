@@ -7,6 +7,7 @@ const config: Config = (api) => {
   return {
     presets: ["babel-preset-expo", "@babel/preset-typescript"],
     plugins: [
+      "react-native-reanimated/plugin",
       [
         "transform-inline-environment-variables",
         {
