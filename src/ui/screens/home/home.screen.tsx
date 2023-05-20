@@ -1,6 +1,5 @@
 import {
   Text,
-  Button,
   StyleSheet,
   View,
   SafeAreaView,
@@ -59,14 +58,6 @@ export const HomeScreen = ({ navigation }: HomeProps) => (
             size={32}
             color="white"
           />
-          <Text style={styles.buttonLabel}>Playing</Text>
-        </Pressable>
-        <Pressable style={styles.button}>
-          <Foundation
-            name="guide-dog"
-            size={32}
-            color="white"
-          />
           <Text style={styles.buttonLabel}>Training</Text>
         </Pressable>
       </View>
@@ -102,26 +93,24 @@ const styles = StyleSheet.create({
     color: "#ef8243",
   },
   buttonBox: {
-    gap: 5,
+    gap: 7,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
   },
   button: {
-    width: 120,
-    height: 120,
-    borderRadius: 120,
-    borderColor: "white",
-    borderWidth: 2,
-    gap: 5,
+    width: 100,
+    height: 100,
+    borderRadius: 12,
+    gap: 10,
     backgroundColor: "black",
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 6,
     },
     shadowOpacity: 0.3,
     shadowRadius: 5,
@@ -129,5 +118,6 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     color: "white",
+    fontSize: 12,
   },
 })

@@ -1,7 +1,5 @@
 type Config = import("@babel/core").ConfigFunction
 
-process.env.TAMAGUI_TARGET = "native"
-
 const config: Config = (api) => {
   api.cache.forever()
   return {

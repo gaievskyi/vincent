@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   actionsBottom: {
     width: "100%",
     position: "absolute",
-    bottom: "37%",
+    bottom: "35%",
     paddingHorizontal: 15,
     justifyContent: "space-between",
     flexDirection: "row",

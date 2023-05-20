@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Dimensions as NativeDimensions } from "react-native"
+import { Dimensions as NativeDimensions, type ScaledSize } from "react-native"
 
 const initialDimensions = {
   window: NativeDimensions.get("window"),

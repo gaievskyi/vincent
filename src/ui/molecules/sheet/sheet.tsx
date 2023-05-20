@@ -1,80 +1,52 @@
 import { type PropsWithChildren } from "react"
-import { SafeAreaView, StyleSheet, View } from "react-native"
+import { SafeAreaView, View } from "react-native"
+
 import {
   PanGestureHandler,
   TouchableOpacity,
   ScrollView,
 } from "react-native-gesture-handler"
-import Animated, {
-  useAnimatedStyle,
-  useDerivedValue,
-  withSpring,
-} from "react-native-reanimated"
 
-import { NAV_HEIGHT, SheetPositions, springConfig } from "./config"
-import { useDimensions, useSheet, useGestures } from "./hooks"
+import Animated, { withSpring } from "react-native-reanimated"
 
-type SheetProps = PropsWithChildren<{
+import { SheetPositions, springConfig } from "./constants"
+import { styles } from "./styles"
+
+import { useGestures } from "./use-gestures"
+import { useSheet } from "./use-sheet"
+
+export type SheetProps = PropsWithChildren<{
   minHeight?: number
   maxHeight?: number
   expandedHeight?: number
 }>
 
 export const Sheet = (props: SheetProps) => {
-  const { minHeight = 260 } = props
-  const dimensions = useDimensions()
-  const { maxHeight, expandedHeight, position, navHeight, sheetHeight } =
-    useSheet(props, dimensions)
+  const sheet = useSheet(props)
+  const handleGestures = useGestures(sheet)
 
-  const handleGestures = useGestures({
-    sheetHeight,
-    minHeight,
-    maxHeight,
-    expandedHeight,
-    position,
-    navHeight,
-  })
-
-  const sheetHeightAnimatedStyle = useAnimatedStyle(() => ({
-    height: -sheetHeight.value,
-  }))
-
-  const sheetContentAnimatedStyle = useAnimatedStyle(() => ({
-    paddingBottom: position.value === SheetPositions.maximised ? 180 : 0,
-    paddingTop: position.value === SheetPositions.maximised ? 100 : 20,
-    paddingHorizontal: 15,
-  }))
-
-  const sheetNavigationAnimatedStyle = useAnimatedStyle(() => ({
-    height: navHeight.value,
-    overflow: "hidden",
-  }))
-
-  const isScrollEnabled = useDerivedValue(
-    () => position.value === SheetPositions.expanded,
-    []
-  )
+  const onClose = () => {
+    sheet.expanderHeight.value = withSpring(0, springConfig)
+    sheet.sheetHeight.value = withSpring(-sheet.expandedHeight, springConfig)
+    sheet.position.value = SheetPositions.expanded
+  }
 
   return (
     <View style={styles.container}>
       <PanGestureHandler onGestureEvent={handleGestures}>
-        <Animated.View style={[sheetHeightAnimatedStyle, styles.sheet]}>
+        <Animated.View style={[sheet.sheetHeightAnimatedStyle, styles.sheet]}>
           <View style={styles.handleContainer}>
             <View style={styles.handle} />
           </View>
-          <Animated.View style={sheetContentAnimatedStyle}>
-            <Animated.View style={sheetNavigationAnimatedStyle}>
+          <Animated.View style={sheet.sheetContentAnimatedStyle}>
+            <Animated.View style={sheet.sheetNavigationAnimatedStyle}>
               <TouchableOpacity
                 style={styles.closeButton}
-                onPress={() => {
-                  navHeight.value = withSpring(0, springConfig)
-                  sheetHeight.value = withSpring(-expandedHeight, springConfig)
-                  position.value = "expanded"
-                }}
+                onPress={onClose}
               />
             </Animated.View>
             <SafeAreaView>
-              <ScrollView scrollEnabled={isScrollEnabled.value}>
+              <ScrollView scrollEnabled={sheet.isScrollEnabled.value}>
                 {props.children}
               </ScrollView>
             </SafeAreaView>
@@ -84,47 +56,3 @@ export const Sheet = (props: SheetProps) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  sheet: {
-    justifyContent: "flex-start",
-    backgroundColor: "#FFFFFF",
-    borderTopLeftRadius: 35,
-    borderTopRightRadius: 35,
-    minHeight: 80,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: -5,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 15,
-    elevation: 5,
-  },
-  handleContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 20,
-  },
-  handle: {
-    width: "15%",
-    height: 4,
-    borderRadius: 8,
-    backgroundColor: "#CCCCCC",
-  },
-  closeButton: {
-    width: NAV_HEIGHT,
-    height: NAV_HEIGHT,
-    borderRadius: NAV_HEIGHT,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "flex-start",
-    marginBottom: 10,
-  },
-})
