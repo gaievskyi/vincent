@@ -1,5 +1,5 @@
 import React, { type PropsWithChildren, useEffect, useState } from "react"
-import { Dimensions, SafeAreaView, StyleSheet, Text, View } from "react-native"
+import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native"
 import {
   PanGestureHandler,
   TouchableOpacity,
@@ -41,7 +41,7 @@ export const Sheet = (props: SheetProps) => {
   }, [])
 
   // Fixed values (for snap positions)
-  const minHeight = props.minHeight || 270
+  const minHeight = props.minHeight || 260
   const maxHeight = props.maxHeight || dimensions.screen.height
   const expandedHeight = props.expandedHeight || dimensions.screen.height * 0.6
 
@@ -51,10 +51,10 @@ export const Sheet = (props: SheetProps) => {
   const sheetHeight = useSharedValue(-minHeight)
 
   const springConfig = {
-    damping: 500,
+    damping: 30,
     stiffness: 200,
-    mass: 1.25,
-    overshootClamping: true,
+    mass: 1,
+    overshootClamping: false,
     restDisplacementThreshold: 0.01,
     restSpeedThreshold: 0.01,
   }
@@ -68,7 +68,13 @@ export const Sheet = (props: SheetProps) => {
     },
     // Update the sheet's height value based on the gesture
     onActive: (ev, ctx: any) => {
-      sheetHeight.value = ctx.offsetY + ev.translationY
+      let newHeight = ctx.offsetY + ev.translationY
+      if (newHeight < -maxHeight) {
+        newHeight = -maxHeight
+      } else if (newHeight > -minHeight) {
+        newHeight = -minHeight
+      }
+      sheetHeight.value = newHeight
     },
     // Snap the sheet to the correct position once the gesture ends
     onEnd: (ev) => {
@@ -159,7 +165,7 @@ export const Sheet = (props: SheetProps) => {
                   sheetHeight.value = withSpring(-expandedHeight, springConfig)
                   position.value = "expanded"
                 }}
-              ></TouchableOpacity>
+              />
             </Animated.View>
             <SafeAreaView>
               <ScrollView>{props.children}</ScrollView>
@@ -183,8 +189,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     backgroundColor: "#FFFFFF",
     // Round the top corners
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
     minHeight: 80,
     // Add a shadow to the top of the sheet
     shadowColor: "#000",
@@ -192,14 +198,14 @@ const styles = StyleSheet.create({
       width: 0,
       height: -5,
     },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.2,
     shadowRadius: 15,
     elevation: 5,
   },
   handleContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 10,
+    paddingTop: 15,
   },
   // Add a small handle component to indicate the sheet can be dragged
   handle: {

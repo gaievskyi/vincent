@@ -268,17 +268,17 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   indicator: {
-    height: 10,
+    height: 8,
     width: "75%",
     backgroundColor: "black",
     borderRadius: 25,
   },
   indicatorValue: {
     alignSelf: "flex-end",
-    fontWeight: "800",
+    fontWeight: "700",
   },
   indicatorOuter: {
-    height: 3,
+    height: 2,
     justifyContent: "center",
     backgroundColor: "#ccc",
     borderRadius: 20,
