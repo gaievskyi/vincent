@@ -1,17 +1,18 @@
-import React, { type PropsWithChildren, useEffect, useState } from "react"
-import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native"
+import { type PropsWithChildren } from "react"
+import { SafeAreaView, StyleSheet, View } from "react-native"
 import {
   PanGestureHandler,
   TouchableOpacity,
   ScrollView,
 } from "react-native-gesture-handler"
 import Animated, {
-  useAnimatedGestureHandler,
   useAnimatedStyle,
-  useSharedValue,
+  useDerivedValue,
   withSpring,
-  withDecay,
 } from "react-native-reanimated"
+
+import { NAV_HEIGHT, SheetPositions, springConfig } from "./config"
+import { useDimensions, useSheet, useGestures } from "./hooks"
 
 type SheetProps = PropsWithChildren<{
   minHeight?: number
@@ -19,128 +20,28 @@ type SheetProps = PropsWithChildren<{
   expandedHeight?: number
 }>
 
-type SheetPositions = "minimised" | "maximised" | "expanded"
-
-const window = Dimensions.get("window")
-const screen = Dimensions.get("screen")
-
-const NAV_HEIGHT = 48
-
 export const Sheet = (props: SheetProps) => {
-  const [dimensions, setDimensions] = useState({ window, screen })
+  const { minHeight = 260 } = props
+  const dimensions = useDimensions()
+  const { maxHeight, expandedHeight, position, navHeight, sheetHeight } =
+    useSheet(props, dimensions)
 
-  useEffect(() => {
-    // Watch for screen size changes and update the dimensions
-    const subscription = Dimensions.addEventListener(
-      "change",
-      ({ window, screen }) => {
-        setDimensions({ window, screen })
-      }
-    )
-    return () => subscription?.remove()
-  }, [])
-
-  // Fixed values (for snap positions)
-  const minHeight = props.minHeight || 260
-  const maxHeight = props.maxHeight || dimensions.screen.height
-  const expandedHeight = props.expandedHeight || dimensions.screen.height * 0.6
-
-  // Animated values
-  const position = useSharedValue<SheetPositions>("minimised")
-  const navHeight = useSharedValue(0)
-  const sheetHeight = useSharedValue(-minHeight)
-
-  const springConfig = {
-    damping: 30,
-    stiffness: 200,
-    mass: 1,
-    overshootClamping: false,
-    restDisplacementThreshold: 0.01,
-    restSpeedThreshold: 0.01,
-  }
-
-  const DRAG_BUFFER = 40
-
-  const onGestureEvent = useAnimatedGestureHandler({
-    // Set the context value to the sheet's current height value
-    onStart: (_ev, ctx: any) => {
-      ctx.offsetY = sheetHeight.value
-    },
-    // Update the sheet's height value based on the gesture
-    onActive: (ev, ctx: any) => {
-      let newHeight = ctx.offsetY + ev.translationY
-      if (newHeight < -maxHeight) {
-        newHeight = -maxHeight
-      } else if (newHeight > -minHeight) {
-        newHeight = -minHeight
-      }
-      sheetHeight.value = newHeight
-    },
-    // Snap the sheet to the correct position once the gesture ends
-    onEnd: (ev) => {
-      // 'worklet' directive is required for animations to work based on shared values
-      "worklet"
-
-      // Snap to expanded position if the sheet is dragged up from minimised position
-      // or dragged down from maximised position
-      const shouldExpand =
-        (position.value === "maximised" &&
-          -sheetHeight.value < maxHeight - DRAG_BUFFER) ||
-        (position.value === "minimised" &&
-          -sheetHeight.value > minHeight + DRAG_BUFFER)
-
-      // Snap to minimised position if the sheet is dragged down from expanded position
-      const shouldMinimise =
-        position.value === "expanded" &&
-        -sheetHeight.value < expandedHeight - DRAG_BUFFER
-
-      // Snap to maximised position if the sheet is dragged up from expanded position
-      const shouldMaximise =
-        position.value === "expanded" &&
-        -sheetHeight.value > expandedHeight + DRAG_BUFFER
-
-      if (ev.velocityY > 500 && position.value !== "minimised") {
-        sheetHeight.value = withDecay({
-          velocity: ev.velocityY,
-          clamp: [-maxHeight, -minHeight],
-        })
-        position.value = "minimised"
-      }
-
-      // Update the sheet's position with spring animation
-      if (shouldExpand) {
-        navHeight.value = withSpring(0, springConfig)
-        sheetHeight.value = withSpring(-expandedHeight, springConfig)
-        position.value = "expanded"
-      } else if (shouldMaximise) {
-        navHeight.value = withSpring(NAV_HEIGHT + 10, springConfig)
-        sheetHeight.value = withSpring(-maxHeight, springConfig)
-        position.value = "maximised"
-      } else if (shouldMinimise) {
-        navHeight.value = withSpring(0, springConfig)
-        sheetHeight.value = withSpring(-minHeight, springConfig)
-        position.value = "minimised"
-      } else {
-        sheetHeight.value = withSpring(
-          position.value === "expanded"
-            ? -expandedHeight
-            : position.value === "maximised"
-            ? -maxHeight
-            : -minHeight,
-          springConfig
-        )
-      }
-    },
+  const handleGestures = useGestures({
+    sheetHeight,
+    minHeight,
+    maxHeight,
+    expandedHeight,
+    position,
+    navHeight,
   })
 
   const sheetHeightAnimatedStyle = useAnimatedStyle(() => ({
-    // The 'worklet' directive is included with useAnimatedStyle hook by default
     height: -sheetHeight.value,
   }))
 
   const sheetContentAnimatedStyle = useAnimatedStyle(() => ({
-    paddingBottom: position.value === "maximised" ? 180 : 0,
-    paddingTop: position.value === "maximised" ? 100 : 20,
+    paddingBottom: position.value === SheetPositions.maximised ? 180 : 0,
+    paddingTop: position.value === SheetPositions.maximised ? 100 : 20,
     paddingHorizontal: 15,
   }))
 
@@ -149,9 +50,14 @@ export const Sheet = (props: SheetProps) => {
     overflow: "hidden",
   }))
 
+  const isScrollEnabled = useDerivedValue(
+    () => position.value === SheetPositions.expanded,
+    []
+  )
+
   return (
     <View style={styles.container}>
-      <PanGestureHandler onGestureEvent={onGestureEvent}>
+      <PanGestureHandler onGestureEvent={handleGestures}>
         <Animated.View style={[sheetHeightAnimatedStyle, styles.sheet]}>
           <View style={styles.handleContainer}>
             <View style={styles.handle} />
@@ -168,7 +74,9 @@ export const Sheet = (props: SheetProps) => {
               />
             </Animated.View>
             <SafeAreaView>
-              <ScrollView>{props.children}</ScrollView>
+              <ScrollView scrollEnabled={isScrollEnabled.value}>
+                {props.children}
+              </ScrollView>
             </SafeAreaView>
           </Animated.View>
         </Animated.View>
@@ -178,7 +86,6 @@ export const Sheet = (props: SheetProps) => {
 }
 
 const styles = StyleSheet.create({
-  // The sheet is positioned absolutely to sit at the bottom of the screen
   container: {
     position: "absolute",
     bottom: 0,
@@ -188,11 +95,9 @@ const styles = StyleSheet.create({
   sheet: {
     justifyContent: "flex-start",
     backgroundColor: "#FFFFFF",
-    // Round the top corners
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,
     minHeight: 80,
-    // Add a shadow to the top of the sheet
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -205,9 +110,8 @@ const styles = StyleSheet.create({
   handleContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 15,
+    paddingTop: 20,
   },
-  // Add a small handle component to indicate the sheet can be dragged
   handle: {
     width: "15%",
     height: 4,
