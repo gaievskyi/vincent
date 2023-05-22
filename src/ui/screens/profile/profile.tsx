@@ -11,8 +11,46 @@ import { Feather } from "@expo/vector-icons"
 import { MaterialIcons } from "@expo/vector-icons"
 import { FontAwesome5 } from "@expo/vector-icons"
 
+// import { Indicator } from "~/ui/atoms"
+import { Characteristics, Sheet } from "~/ui/molecules"
 import { type ProfileProps } from "~/modules"
-import { Sheet } from "~/ui/molecules"
+import { Indicator } from "~/ui/atoms"
+
+const profileCharacteristics = [
+  { text: "5 years" },
+  {
+    text: "5kg",
+    icon: (
+      <FontAwesome5
+        name="weight"
+        size={18}
+        color="black"
+      />
+    ),
+  },
+  {
+    text: "27cm",
+    icon: (
+      <MaterialIcons
+        name="height"
+        size={18}
+        color="black"
+      />
+    ),
+  },
+  { text: "Sterilized" },
+  { text: "Good boy" },
+  {
+    text: "Fish-lover",
+    icon: (
+      <FontAwesome5
+        name="fish"
+        size={18}
+        color="black"
+      />
+    ),
+  },
+]
 
 const image = {
   uri: "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=988&q=100",
@@ -85,62 +123,17 @@ export const ProfileScreen = ({ navigation }: ProfileProps) => (
             <Text style={styles.location}>from Ukraine, Kharkiv</Text>
           </View>
         </View>
-        <View style={styles.characteristics}>
-          <View style={styles.characteristic}>
-            <Text style={styles.characteristicValue}>5 years</Text>
-          </View>
-          <View style={styles.characteristic}>
-            <FontAwesome5
-              name="weight"
-              size={18}
-              color="black"
-            />
-            <Text style={styles.characteristicValue}>5kg</Text>
-          </View>
-          <View style={styles.characteristic}>
-            <MaterialIcons
-              name="height"
-              size={18}
-              color="black"
-            />
-            <Text style={styles.characteristicValue}>27cm</Text>
-          </View>
-          <View style={styles.characteristic}>
-            <Text style={styles.characteristicValue}>Sterilized</Text>
-          </View>
-          <View style={styles.characteristic}>
-            <Text style={styles.characteristicValue}>Good boy</Text>
-          </View>
-          <View style={styles.characteristic}>
-            <FontAwesome5
-              name="fish"
-              size={18}
-              color="black"
-            />
-            <Text style={styles.characteristicValue}>Fish-lover</Text>
-          </View>
-        </View>
+        <Characteristics data={profileCharacteristics} />
         <View style={styles.indicators}>
-          <View style={styles.indicatorBox}>
-            <View style={styles.indicatorHead}>
-              <Text>Happiness</Text>
-              <Text style={styles.indicatorValue}>75%</Text>
-            </View>
-            <View style={styles.indicatorOuter}>
-              <View style={styles.indicator} />
-            </View>
-          </View>
-          <View style={styles.indicatorBox}>
-            <View style={styles.indicatorHead}>
-              <Text>Relationships</Text>
-              <Text style={styles.indicatorValue}>50%</Text>
-            </View>
-            <View style={styles.indicatorOuter}>
-              <View style={{ ...styles.indicator, width: "50%" }} />
-            </View>
-          </View>
+          <Indicator
+            title="Happinness"
+            value={75}
+          />
+          <Indicator
+            title="Relationships"
+            value={50}
+          />
         </View>
-        <View style={styles.achievements}></View>
       </View>
     </Sheet>
   </View>
@@ -234,56 +227,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "300",
   },
-  characteristics: {
-    marginVertical: 20,
-    marginBottom: 35,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-  },
-  characteristic: {
-    gap: 5,
-    alignItems: "center",
-    flexDirection: "row",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 50,
-    borderColor: "#ccc",
-    borderWidth: 1.5,
-  },
-  characteristicValue: {
-    fontWeight: "600",
-    fontSize: 12,
-  },
   indicators: {
     gap: 15,
-  },
-  indicatorBox: {
-    gap: 12,
-  },
-  indicatorHead: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 5,
-  },
-  indicator: {
-    height: 8,
-    width: "75%",
-    backgroundColor: "black",
-    borderRadius: 25,
-  },
-  indicatorValue: {
-    alignSelf: "flex-end",
-    fontWeight: "700",
-  },
-  indicatorOuter: {
-    height: 2,
-    justifyContent: "center",
-    backgroundColor: "#ccc",
-    borderRadius: 20,
-  },
-  achievements: {
-    marginVertical: 20,
   },
 })

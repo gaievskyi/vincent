@@ -3,11 +3,11 @@ import { View, Text } from "react-native"
 import { styles } from "./styles"
 
 type CharacteristicProps = {
-  icon: React.ReactNode
   text: string
+  icon?: React.ReactNode
 }
 
-const Characteristic = ({ icon, text }: CharacteristicProps) => (
+const Characteristic = ({ text, icon }: CharacteristicProps) => (
   <View style={styles.characteristic}>
     {icon}
     <Text style={styles.characteristicValue}>{text}</Text>
@@ -15,12 +15,12 @@ const Characteristic = ({ icon, text }: CharacteristicProps) => (
 )
 
 type CharacteristicsProps = {
-  characteristics: CharacteristicProps[]
+  data: CharacteristicProps[]
 }
 
-export const Characteristics = ({ characteristics }: CharacteristicsProps) => (
+export const Characteristics = ({ data }: CharacteristicsProps) => (
   <View style={styles.characteristics}>
-    {characteristics.map((c, index) => (
+    {data.map((c, index) => (
       <Characteristic
         key={index}
         icon={c.icon}

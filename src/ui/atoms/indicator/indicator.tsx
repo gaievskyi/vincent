@@ -4,18 +4,17 @@ import { styles } from "./styles"
 
 type IndicatorProps = {
   title: string
-  value: string
-  width: string
+  value: number
 }
 
-export const Indicator = ({ title, value, width }: IndicatorProps) => (
+export const Indicator = ({ title, value }: IndicatorProps) => (
   <View style={styles.indicatorBox}>
     <View style={styles.indicatorHead}>
       <Text>{title}</Text>
       <Text style={styles.indicatorValue}>{value}</Text>
     </View>
     <View style={styles.indicatorOuter}>
-      <View style={{ ...styles.indicator, width }} />
+      <View style={{ ...styles.indicator, width: value + "%" }} />
     </View>
   </View>
 )
