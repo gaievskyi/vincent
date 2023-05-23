@@ -1,21 +1,28 @@
-import { StyleSheet, Text, Pressable, Alert } from "react-native"
+import { Text, Pressable, Alert } from "react-native"
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons"
 import Onboarding from "react-native-onboarding-swiper"
 
 import { useOnboarding } from "~/utils/hooks"
-import { type OnboardingProps } from "~/modules"
+import { type StackOnboardingProps } from "~/modules"
+import { styles } from "./styles"
 
-export const OnboardingScreen = ({ navigation }: OnboardingProps) => {
+type OnboardingScreenProps = StackOnboardingProps
+
+export const OnboardingScreen = ({ navigation }: OnboardingScreenProps) => {
   const { complete } = useOnboarding()
 
-  async function onPressStart() {
+  async function onPressStart(): Promise<void> {
     await complete()
     navigation.navigate("Root")
   }
 
+  function onPressSkip(): void {
+    Alert.alert("Skipped")
+  }
+
   return (
     <Onboarding
-      onSkip={() => Alert.alert("Skipped")}
+      onSkip={onPressSkip}
       pages={[
         {
           title: "Hey!",
@@ -90,12 +97,3 @@ export const OnboardingScreen = ({ navigation }: OnboardingProps) => {
     />
   )
 }
-
-const styles = StyleSheet.create({
-  button: {
-    minWidth: "50%",
-    alignItems: "center",
-    borderRadius: 15,
-    padding: 25,
-  },
-})

@@ -1,9 +1,11 @@
 import { Button } from "react-native"
 
 import { Center } from "~/ui/atoms"
-import { type SettingsProps } from "~/modules"
+import { type BottomTabSettingsProps } from "~/modules"
 
-export const SettingsScreen = ({ navigation }: SettingsProps) => (
+type SettingsScreenProps = BottomTabSettingsProps
+
+export const SettingsScreen = ({ navigation }: SettingsScreenProps) => (
   <Center>
     <Button
       title="Home"

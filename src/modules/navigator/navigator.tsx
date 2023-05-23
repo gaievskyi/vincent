@@ -25,7 +25,10 @@ type RootStackParams = {
   Root: undefined
 }
 
-export type OnboardingProps = StackScreenProps<RootStackParams, "Onboarding">
+export type StackOnboardingProps = StackScreenProps<
+  RootStackParams,
+  "Onboarding"
+>
 
 const Stack = createStackNavigator<RootStackParams>()
 
@@ -106,9 +109,15 @@ type BottomTabsParams = {
   Settings: undefined
 }
 
-export type HomeProps = BottomTabScreenProps<BottomTabsParams, "Home">
-export type ProfileProps = BottomTabScreenProps<BottomTabsParams, "Profile">
-export type SettingsProps = BottomTabScreenProps<BottomTabsParams, "Settings">
+export type BottomTabHomeProps = BottomTabScreenProps<BottomTabsParams, "Home">
+export type BottomTabProfileProps = BottomTabScreenProps<
+  BottomTabsParams,
+  "Profile"
+>
+export type BottomTabSettingsProps = BottomTabScreenProps<
+  BottomTabsParams,
+  "Settings"
+>
 
 const Tab = createBottomTabNavigator<BottomTabsParams>()
 
@@ -118,7 +127,7 @@ export const TabNavigator = () => (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarStyle: {
-          borderTopWidth: 0,
+          borderWidth: 0,
         },
         tabBarActiveTintColor: "black",
         headerShown: false,

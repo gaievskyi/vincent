@@ -1,62 +1,19 @@
-import {
-  View,
-  StyleSheet,
-  Text,
-  ImageBackground,
-  Pressable,
-} from "react-native"
+import { View, Text, ImageBackground, Pressable } from "react-native"
 import { Octicons } from "@expo/vector-icons"
 import { Ionicons } from "@expo/vector-icons"
 import { Feather } from "@expo/vector-icons"
-import { MaterialIcons } from "@expo/vector-icons"
-import { FontAwesome5 } from "@expo/vector-icons"
 
-// import { Indicator } from "~/ui/atoms"
 import { Characteristics, Sheet } from "~/ui/molecules"
-import { type ProfileProps } from "~/modules"
 import { Indicator } from "~/ui/atoms"
 
-const profileCharacteristics = [
-  { text: "5 years" },
-  {
-    text: "5kg",
-    icon: (
-      <FontAwesome5
-        name="weight"
-        size={18}
-        color="black"
-      />
-    ),
-  },
-  {
-    text: "27cm",
-    icon: (
-      <MaterialIcons
-        name="height"
-        size={18}
-        color="black"
-      />
-    ),
-  },
-  { text: "Sterilized" },
-  { text: "Good boy" },
-  {
-    text: "Fish-lover",
-    icon: (
-      <FontAwesome5
-        name="fish"
-        size={18}
-        color="black"
-      />
-    ),
-  },
-]
+import { styles } from "./styles"
+import { image, profileCharacteristics } from "./mock-data"
 
-const image = {
-  uri: "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=988&q=100",
-}
+import { type BottomTabProfileProps } from "~/modules"
 
-export const ProfileScreen = ({ navigation }: ProfileProps) => (
+type ProfileScreenProps = BottomTabProfileProps
+
+export const ProfileScreen = ({}: ProfileScreenProps) => (
   <View style={styles.container}>
     <View style={styles.avatarBox}>
       <ImageBackground
@@ -138,96 +95,3 @@ export const ProfileScreen = ({ navigation }: ProfileProps) => (
     </Sheet>
   </View>
 )
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    height: "100%",
-    justifyContent: "space-between",
-    position: "relative",
-  },
-  avatar: {
-    flex: 1,
-    justifyContent: "center",
-    width: "100%",
-    position: "relative",
-  },
-  avatarBox: {
-    width: "100%",
-    height: "100%",
-  },
-  actions: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    position: "absolute",
-    top: 50,
-    paddingHorizontal: 15,
-  },
-  actionsBottom: {
-    width: "100%",
-    position: "absolute",
-    bottom: "35%",
-    paddingHorizontal: 15,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  buttons: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-    borderRadius: 55,
-    height: 45,
-    width: 45,
-  },
-  profile: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
-  stats: {
-    flexDirection: "row",
-    gap: 5,
-    alignItems: "center",
-  },
-  friends: {},
-  profileHead: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  locationBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-  },
-  location: {
-    fontSize: 12,
-    fontWeight: "500",
-    color: "black",
-  },
-  input: {
-    fontSize: 30,
-    fontWeight: "500",
-  },
-  name: {
-    fontSize: 40,
-    fontWeight: "700",
-  },
-  breed: {
-    fontSize: 24,
-    fontWeight: "300",
-  },
-  indicators: {
-    gap: 15,
-  },
-})

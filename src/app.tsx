@@ -1,8 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer as NavigationProvider } from "@react-navigation/native"
 import { Navigator } from "~/modules"
 
 export const App = () => (
-  <NavigationContainer>
+  <NavigationProvider>
     <Navigator />
-  </NavigationContainer>
+  </NavigationProvider>
 )
